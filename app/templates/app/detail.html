@@ -1,52 +1,146 @@
 {% extends 'app/base.html' %}
 {% load static %}
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
-</head>
-<body>
-    {% block register %}
-    {% for product in products  %}
-   <div class="container mt-5 mb-5">
-    <div class="row d-flex justify-content-center">
-        <div class="col-md-10">
-            <div class="card">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="images p-3">
-                            <div class="text-center p-4"> <img id="main-image" src="{{product.ImageURL}}" width="350" /> </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="product p-4">
-                            <!-- <div class="d-flex justify-content-between align-items-center">
-                                <div class="d-flex align-items-center"> <i class="fa fa-long-arrow-left"></i> <span class="ml-1" ><a  href="{% url 'home' %}">Back </a></span> </div> 
-                            </div> -->
-                            <div class="mt-4 mb-3"> 
-                                <h5 class="text-uppercase">{{product.name}}</h5>
-                                <div class="price d-flex flex-row align-items-center"> <span class="act-price">{{product.price | floatformat:3}} VND</span>
-                                </div>
-                                
-                            </div>
-                            <div class="cart mt-4 align-items-center">
-                                <button data-product={{product.id}} data-action= "add" class="btn btn-danger text-uppercase mr-2 px-4 add-btn update-cart">Thêm giỏ hàng</button>
-                                 <!-- <i class="fa fa-heart text-muted"></i> 
-                                 <i class="fa fa-share-alt text-muted"></i>  -->
-                                </div>
-                            <p  style="padding-top: 35px;">Mô tả</p>
-                            <p class="about">{{product.detail}}</p>
-    
-                            
-                        </div>
-                    </div>
+
+{% block main-content %}
+
+<style>
+    .detail-wrapper {
+        max-width: 1200px;
+        margin: 50px auto;
+        padding: 0 20px;
+    }
+
+    .detail-card {
+        background: #fff;
+        border-radius: 24px;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        padding: 30px;
+    }
+
+    .detail-image-box {
+        background: #f8f8f8;
+        border-radius: 20px;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .detail-image-box img {
+        width: 100%;
+        max-width: 420px;
+        height: 420px;
+        object-fit: cover;
+        border-radius: 18px;
+    }
+
+    .detail-info {
+        padding: 10px 10px 10px 30px;
+    }
+
+    .detail-name {
+        font-size: 28px;
+        font-weight: 700;
+        color: #222;
+        margin-bottom: 16px;
+        line-height: 1.4;
+    }
+
+    .detail-price {
+        font-size: 30px;
+        font-weight: bold;
+        color: #D99485;
+        margin-bottom: 20px;
+    }
+
+    .detail-label {
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+        margin-top: 25px;
+        margin-bottom: 10px;
+    }
+
+    .detail-desc {
+        font-size: 16px;
+        color: #555;
+        line-height: 1.8;
+    }
+
+    .detail-actions {
+        margin-top: 25px;
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .add-btn {
+        background-color: #D99485;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 12px 24px;
+        font-weight: 600;
+        transition: 0.3s;
+    }
+
+    .add-btn:hover {
+        background-color: #c87d6d;
+        color: white;
+    }
+
+    .back-btn {
+        background: #f3f3f3;
+        color: #333;
+        border-radius: 12px;
+        padding: 12px 24px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: 0.3s;
+        display: inline-block;
+    }
+
+    .back-btn:hover {
+        background: #e7e7e7;
+        color: #000;
+    }
+</style>
+
+<div class="detail-wrapper">
+    <div class="detail-card">
+        <div class="row align-items-center">
+            
+            <div class="col-md-6 mb-4 mb-md-0">
+                <div class="detail-image-box">
+                    <img id="main-image" src="{{ product.ImageURL }}" alt="{{ product.name }}">
                 </div>
             </div>
+
+            <div class="col-md-6">
+                <div class="detail-info">
+                    <h2 class="detail-name">{{ product.name }}</h2>
+
+                    <div class="detail-price">
+                        {{ product.display_price_vn }} VND
+                    </div>
+
+                    <div class="detail-actions">
+                        <button 
+                            data-product="{{ product.id }}" 
+                            data-action="add" 
+                            class="btn add-btn update-cart">
+                            Thêm giỏ hàng
+                        </button>
+
+                        <a href="{% url 'home' %}" class="back-btn">Quay lại</a>
+                    </div>
+
+                    <div class="detail-label">Mô tả</div>
+                    <p class="detail-desc">{{ product.detail }}</p>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
-{% endfor %}
-    {% endblock %}
-</body>
-</html>
+
+{% endblock %}

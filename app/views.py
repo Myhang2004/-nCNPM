@@ -11,12 +11,15 @@ from django.contrib import messages
 def detail(request):
     customer, order, items, cartItems, user_not_login, user_login = get_cart_details(request)
 
-    id = request.GET.get('id', '')  # Lấy ID sản phẩm từ URL
-    products = Product.objects.filter(id=id)
+    id = request.GET.get('id', '')
+    product = Product.objects.get(id=id)
     categories = Category.objects.filter(is_sub=False)
 
+    product.display_price = int(product.price * 1000)
+    product.display_price_vn = f"{product.display_price:,}".replace(",", ".")
+
     context = {
-        'products': products,
+        'product': product,
         'categories': categories,
         'items': items,
         'order': order,
@@ -136,21 +139,23 @@ def logoutPage(request):
 def home(request):
     customer, order, items, cartItems, user_not_login, user_login = get_cart_details(request)
     categories = Category.objects.filter(is_sub=False)
-
-    if order:  # Nếu đơn hàng hợp lệ (không phải None)
-        # Tính số lượng đơn hàng đã duyệt
-        orders = Order.objects.filter(customer=customer)  # Lấy tất cả đơn hàng của người dùng
-        approved_orders_count = orders.filter(status='approved').count()  # Số đơn hàng đã duyệt
-    else:
-        approved_orders_count = 0  # Nếu không có đơn hàng (người dùng chưa đăng nhập hoặc chưa có đơn hàng)
-
     products = Product.objects.all()
+
+    for product in products:
+        product.display_price = int(product.price * 1000)
+        product.display_price_vn = f"{product.display_price:,}".replace(",", ".")
+
+    if order:
+        orders = Order.objects.filter(customer=customer)
+        approved_orders_count = orders.filter(status='approved').count()
+    else:
+        approved_orders_count = 0
 
     context = {
         'categories': categories,
         'products': products,
         'cartItems': cartItems,
-        'approved_orders_count': approved_orders_count,  # Số lượng đơn hàng đã duyệt
+        'approved_orders_count': approved_orders_count,
         'user_not_login': user_not_login,
         'user_login': user_login,
     }

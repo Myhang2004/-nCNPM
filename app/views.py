@@ -15,11 +15,21 @@ def detail(request):
     product = Product.objects.get(id=id)
     categories = Category.objects.filter(is_sub=False)
 
+    # format giá sản phẩm chính
     product.display_price = int(product.price * 1000)
     product.display_price_vn = f"{product.display_price:,}".replace(",", ".")
 
+    # 🔥 lấy sản phẩm nổi bật (trừ chính nó)
+    products = Product.objects.exclude(id=product.id)[:4]
+
+    # format giá cho sản phẩm nổi bật
+    for p in products:
+        p.display_price = int(p.price * 1000)
+        p.display_price_vn = f"{p.display_price:,}".replace(",", ".")
+
     context = {
         'product': product,
+        'products': products,   # 👈 QUAN TRỌNG
         'categories': categories,
         'items': items,
         'order': order,
@@ -27,6 +37,7 @@ def detail(request):
         'user_not_login': user_not_login,
         'user_login': user_login,
     }
+
     return render(request, 'app/detail.html', context)
 
 

@@ -4,33 +4,74 @@
 {% block main-content %}
 
 <style>
+    body {
+        background: #f8f4f1;
+    }
+
     .detail-wrapper {
-        max-width: 1200px;
-        margin: 50px auto;
+        max-width: 1250px;
+        margin: 40px auto;
         padding: 0 20px;
     }
 
     .detail-card {
-        background: #fff;
+        background: #ffffff;
         border-radius: 24px;
         box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
         overflow: hidden;
-        padding: 30px;
+        padding: 35px;
+        border: 1px solid #f1e5df;
     }
 
     .detail-image-box {
-        background: #f8f8f8;
-        border-radius: 20px;
-        padding: 20px;
-        text-align: center;
+    background: linear-gradient(135deg, #fff8f5, #fdfcfc);
+    border-radius: 20px;
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #f3e3dc;
+    min-height: 520px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.detail-image-box img {
+    width: 100%;
+    max-width: 560px;
+    max-height: 560px;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 16px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transform: scale(1.25);
+}
+
+ 
+    .thumb-list {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        margin-top: 16px;
     }
 
-    .detail-image-box img {
+    .thumb-list img {
         width: 100%;
-        max-width: 420px;
-        height: 420px;
+        height: 90px;
         object-fit: cover;
-        border-radius: 18px;
+        border-radius: 12px;
+        border: 2px solid transparent;
+        cursor: pointer;
+        background: #fff;
+        padding: 4px;
+        transition: all 0.3s ease;
+    }
+
+    .thumb-list img:hover,
+    .thumb-list img.active {
+        border-color: #D99485;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 18px rgba(217, 148, 133, 0.22);
     }
 
     .detail-info {
@@ -38,77 +79,324 @@
     }
 
     .detail-name {
-        font-size: 28px;
+        font-size: 30px;
         font-weight: 700;
-        color: #222;
-        margin-bottom: 16px;
+        color: #2f2f2f;
+        margin-bottom: 18px;
         line-height: 1.4;
     }
 
+    .detail-price-box {
+    background: none;
+    border: none;
+    padding: 0;
+    margin-bottom: 16px;
+}
+
     .detail-price {
-        font-size: 30px;
-        font-weight: bold;
+        font-size: 32px;
+        font-weight: 700;
         color: #D99485;
-        margin-bottom: 20px;
+        margin: 0;
     }
+
+    .detail-short-info {
+    font-size: 16px;
+    color: #6b5b55;
+    line-height: 1.8;
+    margin-bottom: 22px;
+    text-align: justify;   /* 👈 căn đều 2 bên */
+}
 
     .detail-label {
         font-size: 18px;
-        font-weight: 600;
-        color: #333;
-        margin-top: 25px;
-        margin-bottom: 10px;
+        font-weight: 700;
+        color: #3d312d;
+        margin-top: 24px;
+        margin-bottom: 12px;
     }
 
     .detail-desc {
         font-size: 16px;
-        color: #555;
-        line-height: 1.8;
+        color: #5a514d;
+        line-height: 1.9;
+        margin-bottom: 0;
+    }
+
+    .qty-wrap {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 24px;
+        flex-wrap: wrap;
+    }
+
+    .qty-box {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid #ead5ce;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #fff;
+    }
+
+    .qty-btn {
+        width: 42px;
+        height: 42px;
+        border: none;
+        background: #fff7f3;
+        color: #7b5b53;
+        font-size: 20px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .qty-btn:hover {
+        background: #f5e6e0;
+        color: #5f433c;
+    }
+
+    .qty-input {
+        width: 58px;
+        height: 42px;
+        border: none;
+        outline: none;
+        text-align: center;
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+        background: #fff;
+    }
+
+    .stock-text {
+        font-size: 14px;
+        color: #8a7a74;
     }
 
     .detail-actions {
-        margin-top: 25px;
+        margin-top: 10px;
         display: flex;
-        gap: 12px;
+        gap: 14px;
         flex-wrap: wrap;
     }
 
     .add-btn {
-        background-color: #D99485;
+        background: linear-gradient(135deg, #D99485, #c87d6d);
         color: white;
         border: none;
         border-radius: 12px;
-        padding: 12px 24px;
+        padding: 13px 26px;
         font-weight: 600;
         transition: 0.3s;
+        box-shadow: 0 8px 16px rgba(217, 148, 133, 0.25);
     }
 
     .add-btn:hover {
-        background-color: #c87d6d;
+        background: linear-gradient(135deg, #c97c6b, #b96c5c);
         color: white;
+        transform: translateY(-2px);
     }
 
     .back-btn {
-        background: #f3f3f3;
-        color: #333;
+        background: #f7efeb;
+        color: #7a5c54;
         border-radius: 12px;
-        padding: 12px 24px;
+        padding: 13px 24px;
         text-decoration: none;
         font-weight: 600;
         transition: 0.3s;
         display: inline-block;
+        border: 1px solid #ead5ce;
     }
 
     .back-btn:hover {
-        background: #e7e7e7;
-        color: #000;
+        background: #efe1da;
+        color: #5f433c;
+    }
+
+    .detail-section {
+        background: #ffffff;
+        border-radius: 24px;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+        border: 1px solid #f1e5df;
+        padding: 30px;
+        margin-top: 28px;
+    }
+
+    .section-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: #3a2c28;
+        margin-bottom: 18px;
+        position: relative;
+        padding-left: 14px;
+    }
+
+    .section-title::before {
+        content: "";
+        width: 5px;
+        height: 100%;
+        background: #D99485;
+        position: absolute;
+        left: 0;
+        top: 0;
+        border-radius: 10px;
+    }
+
+    .section-content {
+        font-size: 16px;
+        color: #5d5652;
+        line-height: 1.95;
+    }
+
+    .detail-gallery {
+        margin-top: 22px;
+    }
+
+    .gallery-item {
+        background: #fffaf7;
+        border: 1px solid #f0dfd8;
+        border-radius: 18px;
+        overflow: hidden;
+        height: 100%;
+        transition: 0.3s ease;
+    }
+
+    .gallery-item:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
+    }
+
+    .gallery-item img {
+        width: 100%;
+        height: 240px;
+        object-fit: cover;
+        display: block;
+    }
+
+    .gallery-caption {
+        padding: 14px 16px;
+        font-size: 15px;
+        color: #6a5a54;
+        line-height: 1.7;
+    }
+
+    .featured-products {
+        margin-top: 10px;
+    }
+
+    .featured-card {
+        background: #fffaf7;
+        border: 1px solid #efdfd8;
+        border-radius: 18px;
+        overflow: hidden;
+        transition: 0.3s ease;
+        height: 100%;
+    }
+
+    .featured-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    .featured-card img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+    }
+
+    .featured-body {
+        padding: 16px;
+    }
+
+    .featured-name {
+        font-size: 17px;
+        font-weight: 700;
+        color: #332824;
+        margin-bottom: 8px;
+        min-height: 48px;
+        line-height: 1.5;
+    }
+
+    .featured-price {
+        font-size: 18px;
+        font-weight: 700;
+        color: #D99485;
+        margin-bottom: 12px;
+    }
+
+    .featured-link {
+        display: inline-block;
+        text-decoration: none;
+        color: #D99485;
+        font-weight: 600;
+        transition: 0.3s;
+    }
+
+    .featured-link:hover {
+        color: #a85f51;
+    }
+
+    @media (max-width: 991px) {
+        .detail-info {
+            padding: 25px 0 0 0;
+        }
+
+        .detail-name {
+            font-size: 26px;
+        }
+
+        .detail-price {
+            font-size: 28px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .detail-wrapper {
+            margin: 25px auto;
+            padding: 0 12px;
+        }
+
+        .detail-card,
+        .detail-section {
+            padding: 20px;
+            border-radius: 18px;
+        }
+
+        .detail-name {
+            font-size: 24px;
+        }
+
+        .detail-actions {
+            flex-direction: column;
+        }
+
+        .add-btn,
+        .back-btn {
+            width: 100%;
+            text-align: center;
+        }
+
+        .gallery-item img,
+        .featured-card img {
+            height: 200px;
+        }
+
+        .thumb-list img {
+            height: 70px;
+        }
+
+        .detail-image-box {
+            min-height: 320px;
+        }
     }
 </style>
 
 <div class="detail-wrapper">
+
     <div class="detail-card">
-        <div class="row align-items-center">
-            
+        <div class="row align-items-start">
             <div class="col-md-6 mb-4 mb-md-0">
                 <div class="detail-image-box">
                     <img id="main-image" src="{{ product.ImageURL }}" alt="{{ product.name }}">
@@ -119,28 +407,126 @@
                 <div class="detail-info">
                     <h2 class="detail-name">{{ product.name }}</h2>
 
-                    <div class="detail-price">
-                        {{ product.display_price_vn }} VND
+                    <div class="detail-price-box">
+                        <p class="detail-price">{{ product.display_price_vn }} VND</p>
+                    </div>
+
+                    <div class="detail-short-info">
+                        Trang sức bạc mang vẻ đẹp tinh tế, nhẹ nhàng nhưng vẫn đủ nổi bật để tạo điểm nhấn cho phong cách của bạn. Với thiết kế đa dạng và sắc bạc sáng thanh lịch, mỗi món trang sức không chỉ giúp tôn lên vẻ ngoài mà còn thể hiện gu thẩm mỹ riêng, phù hợp cho cả những dịp thường ngày lẫn đặc biệt.
+
+                    </div>
+
+                    <div class="detail-label">Số lượng</div>
+                    <div class="qty-wrap">
+                        <div class="qty-box">
+                            <button type="button" class="qty-btn" onclick="changeQty(-1)">-</button>
+                            <input type="text" id="qty" class="qty-input" value="1" readonly>
+                            <button type="button" class="qty-btn" onclick="changeQty(1)">+</button>
+                        </div>
                     </div>
 
                     <div class="detail-actions">
-                        <button 
-                            data-product="{{ product.id }}" 
-                            data-action="add" 
-                            class="btn add-btn update-cart">
+                        <button
+                            type="button"
+                            data-product="{{ product.id }}"
+                            data-action="add"
+                            class="btn add-btn update-cart"
+                            onclick="setQuantityToCart(this)">
                             Thêm giỏ hàng
                         </button>
 
                         <a href="{% url 'home' %}" class="back-btn">Quay lại</a>
                     </div>
-
-                    <div class="detail-label">Mô tả</div>
-                    <p class="detail-desc">{{ product.detail }}</p>
                 </div>
             </div>
-
         </div>
     </div>
+
+    <div class="detail-section">
+        <h3 class="section-title">Mô tả chi tiết sản phẩm</h3>
+        <div class="section-content">
+            <p>{{ product.detail }}</p>
+        </div>
+
+        <div class="detail-gallery">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="gallery-item">
+                        <img src="{{ product.ImageURL }}" alt="{{ product.name }}">
+                        <div class="gallery-caption">
+                            Hình ảnh minh họa tổng thể sản phẩm.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="gallery-item">
+                        <img src="{{ product.ImageURL }}" alt="{{ product.name }}">
+                        <div class="gallery-caption">
+                            Có thể thay bằng ảnh cận cảnh để làm nổi bật chất liệu hoặc chi tiết sản phẩm.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="gallery-item">
+                        <img src="{{ product.ImageURL }}" alt="{{ product.name }}">
+                        <div class="gallery-caption">
+                            Phù hợp để chèn thêm ảnh đóng gói hoặc hình ảnh sử dụng thực tế.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <div class="detail-section">
+    <h3 class="section-title">Sản phẩm nổi bật</h3>
+
+    <div class="row g-4">
+        {% for item in products %}
+        <div class="col-md-3 col-sm-6">
+            <div class="featured-card">
+                <img src="{{ item.ImageURL }}" alt="{{ item.name }}">
+                <div class="featured-body">
+                    <div class="featured-name">{{ item.name }}</div>
+                    <div class="featured-price">{{ item.display_price_vn }} VND</div>
+
+                    <a href="{% url 'detail' %}?id={{ item.id }}" class="featured-link">
+                        Xem sản phẩm →
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 </div>
+
+</div>
+
+<script>
+    function changeImage(img) {
+        document.getElementById('main-image').src = img.src;
+
+        document.querySelectorAll('.thumb-list img').forEach(function(item) {
+            item.classList.remove('active');
+        });
+
+        img.classList.add('active');
+    }
+
+    function changeQty(amount) {
+        let qtyInput = document.getElementById('qty');
+        let current = parseInt(qtyInput.value) || 1;
+        current += amount;
+        if (current < 1) current = 1;
+        qtyInput.value = current;
+    }
+
+    function setQuantityToCart(button) {
+        let qty = document.getElementById('qty').value;
+        button.setAttribute('data-quantity', qty);
+    }
+</script>
 
 {% endblock %}

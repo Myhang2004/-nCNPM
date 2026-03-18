@@ -1,6 +1,7 @@
 {% extends 'app/base.html' %}
 {% load static %}
 {% block content_checkout %}
+
 <!-- Hiển thị thông báo -->
 <!-- {% if messages %}
 <div class="alert alert-success" role="alert">
@@ -16,16 +17,17 @@
             <form id="form" method="POST">
                 {% csrf_token %} <!-- Bổ sung token CSRF -->
                 
-                <div id="user-info">
+                
+
+                <div id="shipping-info">
+                    <br>
+                    <p>THÔNG TIN GIAO HÀNG :</p>
+                    <hr>
+                    <div id="user-info">
                     <div class="form-field">
                         <input required class="form-control" type="text" name="name" placeholder="Họ và tên..">
                     </div>
                 </div>
-
-                <div id="shipping-info">
-                    <hr>
-                    <p>Thông tin giao hàng:</p>
-                    <hr>
                     <div class="form-field">
                         <input class="form-control" type="text" name="address" placeholder="Địa chỉ..">
                     </div>
@@ -38,8 +40,9 @@
                 </div>
 
                 <hr>
-                <input id="form-button" class="btn btn-success btn-sm" type="submit" value="Thanh toán">
+                <input id="form-button" class="btn btn-success btn-sm" type="submit" value="Thanh toán ngay">
             </form>
+            
         </div>
     </div>
 
@@ -72,10 +75,42 @@
                 </tbody>
                 {% endfor %}
             </table>
+           <h5>
+            <strong>Ghi chú:</strong> 
+            <span style="font-weight: normal;">
+                {{ order.note|default:"Không có ghi chú" }}
+            </span>
+        </h5>
+            
             <h5>Sản phẩm: {{ order.get_cart_items }}</h5>
             <h5>Tổng số tiền: {{ order.get_cart_total|floatformat:3 }} VND</h5>
             
         </div>
+        
+              <div class="box-element">
+    <h5>Nhập mã khuyến mãi</h5>
+
+    <div style="display:flex; gap:10px; margin-bottom:10px;">
+        <input type="text" 
+               placeholder="Nhập mã..." 
+               name="coupon" 
+               id="coupon-code" 
+               style="width:70%; padding:5px;">
+        
+        <button type="button" 
+                id="apply-coupon-btn" 
+                style="width:30%; margin-left:10px; 
+                       background-color:#ffc0cb; /* màu hồng phấn */
+                       border:none;
+                       color:white;
+                       font-weight:bold;
+                       cursor:pointer;
+                       padding:5px 0;
+                       border-radius:5px;">
+            Áp dụng
+        </button>
     </div>
+
+    <small id="coupon-msg" style="color:green;"></small>
 </div>
 {% endblock content_checkout %}

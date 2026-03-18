@@ -77,50 +77,67 @@
                 </tbody>
             </table>
         </div>
-                <!-- Ghi chú đơn hàng -->
-        <div class="box-element">
-            <h5>Ghi chú đơn hàng</h5>
-            <textarea name="note"
-                    class="form-control"
-                    rows="3"
-                    placeholder="Nhập ghi chú cho đơn hàng (ví dụ: giao giờ hành chính, gọi trước khi giao...)"></textarea>
-        </div>
-        <!-- Tổng giỏ hàng -->
-                
-        <div class="box-element">
-            <table class="table">
-                <tr>
-                    <th>
-                        <h5>Số sản phẩm: <strong>{{order.get_cart_items}}</strong></h5>
-                    </th>
-                </tr>
+       <form method="POST" action="{% url 'checkout' %}">
+    {% csrf_token %}
 
-                <tr>
-                    <th>
-                        <h5>Phí vận chuyển:
-                            <strong style="color:green;">Miễn phí</strong>
-                        </h5>
-                    </th>
-                </tr>
+    <!-- Ghi chú -->
+    {% comment %} <div class="box-element">
+        <h5>Ghi chú đơn hàng</h5>
+        <textarea name="note"
+                class="form-control"
+                rows="3"
+                placeholder="Nhập ghi chú...">{{ order.note }}</textarea>
+    </div> {% endcomment %}
 
-                <tr>
-                    <th>
-                        <h5>Tổng tiền đơn hàng:
-                            <strong>{{order.get_cart_total | floatformat:3}} VND</strong>
-                        </h5>
-                    </th>
+    <!-- Tổng -->
+    <div class="box-element">
+        <table class="table">
 
-                   
-                </tr>
-                <tr>
-                     <th>
-                        <a style="float:right;"
-                        class="btn btn-success btn-lg"
-                        href="{% url 'checkout' %}">
-                            Thanh toán ngay
-                        </a>
-                    </th>
-                </tr>
-            </table>
-        </div>
+            <tr>
+                <th>
+                    <h5>Số sản phẩm: <strong>{{order.get_cart_items}}</strong></h5>
+                </th>
+            </tr>
+
+            <tr>
+                <th>
+                    <h5>Phí vận chuyển:
+                        <strong style="color:green;">Miễn phí</strong>
+                    </h5>
+                </th>
+            </tr>
+
+            <tr>
+                <th>
+                    <h5>Tổng tiền:
+                        <strong>{{order.get_cart_total | floatformat:3}} VND</strong>
+                    </h5>
+                </th>
+            </tr>
+
+            <tr>
+                <th>
+<form method="POST" action="{% url 'checkout' %}">
+    {% csrf_token %}
+
+    <div class="box-element">
+        <h5>Ghi chú đơn hàng</h5>
+        <textarea name="note"
+                  class="form-control"
+                  rows="3"
+                  placeholder="Nhập ghi chú...">{{ order.note }}</textarea>
+    </div>
+
+    <button type="submit"
+            class="btn btn-success btn-lg"
+            style="float:right;">
+        Thanh toán ngay
+    </button>
+</form>
+                </th>
+            </tr>
+
+        </table>
+    </div>
+</form>
 {% endblock cart_content %}

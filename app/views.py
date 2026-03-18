@@ -211,19 +211,22 @@ def checkout(request):
 
     # Xử lý khi người dùng gửi yêu cầu đặt hàng
     if request.method == 'POST':
-        if order:
-            order.date_order = localtime(now())  # Lưu thời gian hiện tại với múi giờ địa phương
-            order.complete = True  # Đánh dấu đơn hàng đã hoàn tất
-            order.save()  # Lưu đơn hàng
+        note = request.POST.get('note')
 
-            # Hiển thị thông báo thành công với thông tin người đặt
-         
-            # Chuyển hướng về trang hóa đơn sau khi đặt hàng thành công
-            return redirect('invoice', order_id=order.id)  # Chuyển hướng về trang hóa đơn
+        # 👉 Nếu có note từ CART
+        if note:
+            order.note = note
+            order.save()
+
+            return redirect('checkout')  # 👉 CHỈ reload, KHÔNG tạo đơn
+
+        # 👉 Nếu bấm thanh toán ở CHECKOUT
         else:
-            messages.error(request, "Không có giỏ hàng để đặt! Vui lòng kiểm tra lại.")
-            return redirect('cart')
+            order.date_order = localtime(now())
+            order.complete = True
+            order.save()
 
+            return redirect('invoice', order_id=order.id)
     # Kiểm tra nếu đơn hàng đã hoàn tất thì hiển thị các sản phẩm
     if order and order.complete:
         items = order.orderitem_set.all()

@@ -75,7 +75,7 @@ class Order(models.Model):
     transaction_id = models.CharField(max_length=200, null=True)
     approved_date = models.DateTimeField(null=True, blank=True)  # Lưu thời gian duyệt đơn
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')  # Thêm trạng thái
-
+    note = models.TextField(null=True, blank=True)
     def __str__(self):
         return f"Order #{self.id}"
 

@@ -86,7 +86,12 @@ DATABASES = {
         'NAME': 'django',
         'USER': 'root',
         'PASSWORD':'',
-        'HOST': 'localhost'
+        'HOST': 'localhost',
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+            'use_unicode': True,
+            'init_command': "SET NAMES 'utf8mb4'",
+        },
         }
 }
 

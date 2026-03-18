@@ -1,0 +1,40 @@
+/* Đảm bảo "Đăng nhập" và "Đăng ký" không bị xuống dòng */
+.navbar-nav .nav-item {
+    white-space: nowrap; /* Giữ các mục trên 1 dòng */
+    flex-shrink: 0; /* Ngừng co lại khi không gian không đủ */
+}
+
+/* Navbar */
+.navbar-nav {
+    display: flex; /* Đảm bảo các mục nằm trên cùng một dòng */
+    flex-wrap: nowrap; /* Ngăn chặn xuống dòng */
+    gap: 15px; /* Khoảng cách giữa các mục */
+    align-items: center; /* Căn chỉnh các phần tử theo chiều dọc */
+}
+
+/* Chỉnh sửa các liên kết "Đăng nhập" và "Đăng ký" */
+.navbar-nav .nav-item {
+    white-space: nowrap; /* Đảm bảo nội dung không bị ngắt dòng */
+    flex-shrink: 0; /* Ngừng co lại khi không gian không đủ */
+}
+
+/* Nếu cần, điều chỉnh khoảng cách giữa các mục "Đăng nhập" và "Đăng ký" */
+.navbar-nav .nav-item .nav-link {
+    margin-right: 10px; /* Khoảng cách giữa "Đăng nhập" và "Đăng ký" */
+}
+
+/* Các mục navbar */
+.navbar-nav .nav-link {
+    color: #333;
+    font-size: 16px;
+    font-weight: 500;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+}
+
+
+
+/* Bỏ in đậm chữ "Trang chủ" */
+.navbar-nav .nav-item .nav-link.active {
+    font-weight: normal; /* Bỏ in đậm */
+}

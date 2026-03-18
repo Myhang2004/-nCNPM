@@ -1,0 +1,96 @@
+<h2>Chat khách hàng</h2>
+
+<div id="chat"></div>
+
+<input id="msg" placeholder="Nhập tin nhắn">
+<button onclick="send()">Gửi</button>
+
+<script>
+
+function loadMessages(){
+
+fetch("/messages/")
+.then(res => res.json())
+.then(data => {
+
+let html = ""
+
+data.forEach(m => {
+
+if(m.sender === "admin"){
+html += "<p style='color:green'><b>Shop:</b> "+m.message+"</p>"
+}
+else{
+html += "<p><b>Khách:</b> "+m.message+"</p>"
+}
+
+})
+
+document.getElementById("chat").innerHTML = html
+
+})
+
+}
+
+function send(){
+
+let msg = document.getElementById("msg").value
+
+fetch("/admin-send/",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({message:msg})
+})
+.then(()=>{
+document.getElementById("msg").value=""
+loadMessages()
+})
+
+}
+
+loadMessages()
+
+setInterval(loadMessages,2000)
+function loadMessages(){
+
+fetch("/messages/")
+.then(res => res.json())
+.then(data => {
+
+let chat = document.getElementById("chat-body")
+
+chat.innerHTML = ""
+
+data.forEach(msg => {
+
+if(msg.sender === "user"){
+
+chat.innerHTML += `
+<div style="text-align:right;margin:6px">
+<span style="background:#22c55e;color:white;padding:8px 12px;border-radius:10px">
+${msg.message}
+</span>
+</div>
+`
+
+}
+
+else{
+
+chat.innerHTML += `
+<div style="text-align:left;margin:6px">
+<span style="background:#e5e7eb;padding:8px 12px;border-radius:10px">
+${msg.message}
+</span>
+</div>
+`
+
+}
+
+})
+
+})
+}
+</script>

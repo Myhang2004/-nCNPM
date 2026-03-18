@@ -1,0 +1,91 @@
+{% extends 'app/base.html' %}
+{% load static %}
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+</head>
+<body>
+{% block register %}
+<section class="bg-image"
+  style="background-image: url('https://i.ytimg.com/vi/0wSjPqyHj6o/maxresdefault.jpg'); min-height: 100vh;">
+  <div class="mask d-flex align-items-center" style="min-height: 100vh;">
+    <div class="container">
+      <div class="row d-flex justify-content-end align-items-center">
+        <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+          <div class="card" style="border-radius: 15px;">
+            <div class="card-body p-5">
+              <img src="https://inkythuatso.com/uploads/images/2021/12/logo-truong-dai-hoc-kien-truc-da-nang-inkythuatso-01-25-15-05-26.jpg" 
+                   width="100px" 
+                   height="100px" 
+                   style="display: block; margin: 0 auto;" 
+                   alt="Logo Trường Đại học Kiến Trúc Đà Nẵng">
+              <h2 class="text-uppercase text-center mb-5">Đăng ký</h2>
+
+              <form method="POST" action="">
+                {% csrf_token %}
+                <div class="form-group mb-4">
+                  <label for="username">Tên người dùng</label>
+                  <input type="text" name="username" id="username" 
+                         class="form-control form-control-lg {% if form.username.errors %}is-invalid{% endif %}" 
+                         value="{{ form.username.value|default:'' }}" />
+                  {% if form.username.errors %}
+                  <small class="text-danger">{{ form.username.errors|join:", " }}</small>
+                  {% endif %}
+                </div>
+
+                <div class="form-group mb-4">
+                  <label for="email">Email</label>
+                  <input type="email" name="email" id="email" 
+                         class="form-control form-control-lg {% if form.email.errors %}is-invalid{% endif %}" 
+                         value="{{ form.email.value|default:'' }}" />
+                  {% if form.email.errors %}
+                  <small class="text-danger">{{ form.email.errors|join:", " }}</small>
+                  {% endif %}
+                </div>
+
+                <div class="form-group mb-4">
+                  <label for="password1">Mật khẩu</label>
+                  <input type="password" name="password1" id="password1" 
+                         class="form-control form-control-lg {% if form.password1.errors %}is-invalid{% endif %}" />
+                  {% if form.password1.errors %}
+                  <small class="text-danger">{{ form.password1.errors|join:", " }}</small>
+                  {% endif %}
+                </div>
+
+                <div class="form-group mb-4">
+                  <label for="password2">Nhập lại mật khẩu</label>
+                  <input type="password" name="password2" id="password2" 
+                         class="form-control form-control-lg {% if form.password2.errors %}is-invalid{% endif %}" />
+                  {% if form.password2.errors %}
+                  <small class="text-danger">{{ form.password2.errors|join:", " }}</small>
+                  {% endif %}
+                </div>
+
+                <div class="d-flex justify-content-center">
+                  <button type="submit" 
+                          class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" 
+                          style="background-color: #D99485;">Đăng ký</button>
+                </div>
+
+                <p class="text-center text-muted mt-5 mb-0">
+                  Bạn đã có tài khoản? 
+                  <a href="{% url 'login' %}" style="text-decoration: none; color: black;">Đăng nhập</a>
+                </p>
+
+                {% for message in messages %}
+                <p id="message" class="text-center text-muted mt-5 mb-0">{{ message }}</p>
+                {% endfor %}
+              </form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+</body>
+</html>

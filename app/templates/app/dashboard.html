@@ -1,0 +1,31 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+<div class="order-history-container container mt-4">
+    <h1 class="text-center mb-4">Đơn hàng đã duyệt</h1>
+
+    {% if orders %}
+        {% for order in orders %}
+            {% if order.status == 'approved' %}
+                <div class="order-item border p-3 mb-3 rounded shadow-sm">
+                    <p class="order-info mb-2">
+                        <strong>Đơn hàng #{{ order.id }}</strong> - 
+                        <span class="badge bg-success">Đã duyệt</span> - 
+                        <strong>Ngày duyệt:</strong> 
+                        {% if order.approved_date %}
+                            {{ order.approved_date|date:"d-m-Y H:i:s" }}
+                        {% else %}
+                            <span class="text-muted">Chưa duyệt</span>
+                        {% endif %}
+                    </p>
+                    <a href="{% url 'invoice' order.id %}" class="btn btn-sm btn-primary">Xem chi tiết</a>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <div class="alert alert-info text-center" role="alert">
+            <strong>Chưa có đơn hàng!</strong> Bạn chưa có đơn hàng nào trong lịch sử.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,468 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block banner_slider %}
+<div id="carouselExampleControlsNoTouching" class="carousel slide" data-bs-touch="false">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide-to="2" aria-label="Slide 3"></button>
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="{% static 'app/images/banner/b1.jpg' %}" class="d-block w-100" alt="..." height="580">
+    </div>
+    
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+<button id="toggle-products" class="btn btn-primary btn-sm" style="border-radius: 10px; padding-top: 5px; width: 50px;">
+  <i class="bi bi-box-arrow-in-down-right"></i>
+</button>
+{% endblock %}
+
+{% block main-content %}
+<div id="product-list" class="row" style="width:100%">
+  {% for product in products %}
+  {% if not product.id == 0 %}
+  <div class="col-lg-4 col-md-6 mb-4">
+    <div class="card">
+      <img src="{{ product.ImageURL }}" class="card-img-top" alt="Trang sức" height="330px">
+      <div class="card-body d-flex flex-column">
+        
+        <h6><strong>{{ product.name }}</strong></h6>
+        <hr>
+        <div style="display:flex; gap:10px; margin-top:10px;">
+
+          <button 
+              data-product="{{ product.id }}" 
+              data-action="add" 
+              class="btn add-btn update-cart"
+              style="background-color:#D99485; color:white; flex:2;">
+              Thêm vào giỏ hàng
+          </button>
+
+          <a 
+              href="{% url 'detail' %}?id={{ product.id }}" 
+              class="btn"
+              style="background-color:#D99485; color:white; flex:1; text-align:center;">
+              Xem
+          </a>
+
+      </div>
+        <h4 class="mt-3"><strong>{{ product.price|floatformat:3 }} VND</strong></h4>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  {% endfor %}
+  <!-- ================= CHAT BUTTON ================= -->
+
+<button id="openChatBtn"
+     style="
+         position:fixed;
+         bottom:20px;
+         right:20px;
+         background:#D99485;
+         color:white;
+         border:none;
+         border-radius:50%;
+         width:60px;
+         height:60px;
+         font-size:24px;
+         cursor:pointer;
+         box-shadow:0 4px 8px rgba(0,0,0,0.2);
+         z-index:1000;
+         display:flex;
+         justify-content:center;
+         align-items:center;
+     ">
+
+
+<i class="bi bi-chat-dots-fill"></i>
+
+
+</button>
+
+<!-- ================= CHAT BOX ================= -->
+
+<div id="chatBox"
+     style="
+        display:none;
+        position:fixed;
+        bottom:90px;
+        right:20px;
+        width:320px;
+        height:400px;
+        background:white;
+        border-radius:10px;
+        box-shadow:0 4px 15px rgba(0,0,0,0.2);
+        z-index:1000;
+        flex-direction:column;
+        overflow:hidden;
+     ">
+
+```
+<!-- HEADER -->
+
+<div style="
+        background:#D99485;
+        color:white;
+        padding:15px;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+    ">
+
+    <h6 style="margin:0;font-weight:bold;">
+        Hỗ trợ khách hàng
+    </h6>
+
+    <button id="closeChatBtn"
+            style="
+                background:none;
+                border:none;
+                color:white;
+                font-size:20px;
+                cursor:pointer;
+            ">
+        <i class="bi bi-x-lg"></i>
+    </button>
+
+</div>
+
+
+<!-- MESSAGE AREA -->
+
+<div id="chatMessages"
+     style="
+        flex:1;
+        padding:15px;
+        overflow-y:auto;
+        background:#f8f9fa;
+     ">
+
+    <div style="margin-bottom:10px;">
+        <span style="
+            background:#e9ecef;
+            padding:8px 12px;
+            border-radius:15px;
+            display:inline-block;
+            font-size:14px;
+        ">
+            Chào bạn 👋 Shop có thể giúp gì cho bạn?
+        </span>
+    </div>
+
+</div>
+
+
+<!-- INPUT AREA -->
+
+<div style="
+        padding:10px;
+        border-top:1px solid #ddd;
+        display:flex;
+        gap:5px;
+        background:white;
+    ">
+
+    <input type="text"
+           id="chatInput"
+           placeholder="Nhập tin nhắn..."
+           style="
+                flex:1;
+                padding:8px;
+                border:1px solid #ccc;
+                border-radius:5px;
+                outline:none;
+           ">
+
+    <button id="sendChatBtn"
+        class="btn"
+        style="background:#d48c7a;color:white;border-radius:5px">
+        <i class="bi bi-send-fill"></i>
+    </button>
+
+</div>
+```
+
+</div>
+  
+</div>
+
+
+<script>
+
+  // Thêm sự kiện toggle để ẩn/hiện danh sách sản phẩm (GIỮ NGUYÊN CODE CỦA BẠN)
+  document.getElementById('toggle-products').addEventListener('click', function() {
+    var productList = document.getElementById('product-list');
+    if (productList.style.display === "none" || productList.style.display === "") {
+      productList.style.display = "flex"; 
+    } else {
+      productList.style.display = "none"; 
+    }
+  });
+
+  document.addEventListener("DOMContentLoaded", function () {
+
+    // ================= ẨN HIỆN SẢN PHẨM (GIỮ NGUYÊN) =================
+
+    const toggleBtn = document.getElementById("toggleProductsBtn");
+    const productContainer = document.getElementById("productContainer");
+    const toggleIcon = document.getElementById("toggleIcon");
+
+    if (toggleBtn) {
+
+        toggleBtn.addEventListener("click", function () {
+
+            if (productContainer.style.display === "none") {
+
+                productContainer.style.display = "flex";
+                toggleIcon.classList.remove("bi-grid");
+                toggleIcon.classList.add("bi-x");
+
+            } else {
+
+                productContainer.style.display = "none";
+                toggleIcon.classList.remove("bi-x");
+                toggleIcon.classList.add("bi-grid");
+
+            }
+
+        });
+
+    }
+
+    // ================= CHATBOX =================
+
+    const openChatBtn = document.getElementById("openChatBtn");
+    const closeChatBtn = document.getElementById("closeChatBtn");
+    const chatBox = document.getElementById("chatBox");
+
+    const sendBtn = document.getElementById("sendChatBtn");
+    const chatInput = document.getElementById("chatInput");
+    const chatMessages = document.getElementById("chatMessages");
+
+
+    // ===== MỞ CHAT =====
+    openChatBtn.onclick = function () {
+        chatBox.style.display = "flex";
+        loadMessages();
+    };
+
+    // ===== ĐÓNG CHAT =====
+    closeChatBtn.onclick = function () {
+        chatBox.style.display = "none";
+    };
+
+
+    // ================= CSRF =================
+
+    function getCookie(name) {
+
+        let cookieValue = null;
+
+        if (document.cookie && document.cookie !== "") {
+
+            const cookies = document.cookie.split(";");
+
+            for (let i = 0; i < cookies.length; i++) {
+
+                const cookie = cookies[i].trim();
+
+                if (cookie.substring(0, name.length + 1) === (name + "=")) {
+
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+
+                }
+
+            }
+
+        }
+
+        return cookieValue;
+
+    }
+
+    const csrftoken = getCookie("csrftoken");
+
+
+    // ================= LOAD TIN NHẮN =================
+
+    function loadMessages(){
+
+        fetch("/messages/")
+        .then(res => res.json())
+        .then(data => {
+
+            chatMessages.innerHTML = ""
+
+            if(data.length === 0){
+
+                chatMessages.innerHTML = `
+                <div style="margin-bottom:10px;">
+                <span style="
+                background:#e9ecef;
+                padding:8px 12px;
+                border-radius:15px;
+                display:inline-block;
+                font-size:14px;
+                ">
+                Chào bạn 👋 Shop có thể giúp gì cho bạn?
+                </span>
+                </div>
+                `
+
+                return
+            }
+
+            data.forEach(msg => {
+
+            let msgDiv = document.createElement("div")
+
+            msgDiv.style.marginBottom = "10px"
+
+            if(msg.sender === "user"){
+
+                msgDiv.style.textAlign = "right"
+
+                msgDiv.innerHTML = `
+                <span style="
+                background:#f3b6a5;
+                color:white;
+                padding:8px 12px;
+                border-radius:15px;
+                display:inline-block;
+                font-size:14px;
+                ">
+                ${msg.message}
+                </span>
+                `
+
+            } else {
+
+                msgDiv.style.textAlign = "left"
+
+                msgDiv.innerHTML = `
+                <span style="
+                background:#e9ecef;
+                padding:8px 12px;
+                border-radius:15px;
+                display:inline-block;
+                font-size:14px;
+                ">
+                ${msg.message}
+                </span>
+                `
+
+            }
+
+            chatMessages.appendChild(msgDiv)
+
+            })
+
+            chatMessages.scrollTop = chatMessages.scrollHeight
+
+        })
+
+    }
+
+
+    // ================= GỬI TIN NHẮN =================
+
+    function sendMessage() {
+
+        let message = chatInput.value.trim();
+
+        if (message === "") return;
+
+        let userMsg = document.createElement("div");
+
+        userMsg.style.textAlign = "right";
+        userMsg.style.marginBottom = "10px";
+
+        userMsg.innerHTML = `
+            <span style="
+                background:#f3b6a5;
+                color:white;
+                padding:8px 12px;
+                border-radius:15px;
+                display:inline-block;
+                font-size:14px;
+            ">
+                ${message}
+            </span>
+        `;
+
+        chatMessages.appendChild(userMsg);
+
+        chatInput.value = "";
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+
+        fetch("/chat/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrftoken
+            },
+            body: JSON.stringify({
+                message: message
+            })
+        })
+
+        .then(res => res.json())
+
+        .then(data => {
+
+            let botMsg = document.createElement("div");
+
+            botMsg.style.textAlign = "left";
+            botMsg.style.marginBottom = "10px";
+
+            botMsg.innerHTML = `
+                <span style="
+                    background:#e9ecef;
+                    padding:8px 12px;
+                    border-radius:15px;
+                    display:inline-block;
+                    font-size:14px;
+                ">
+                    ${data.reply}
+                </span>
+            `;
+
+            chatMessages.appendChild(botMsg);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        });
+
+    }
+
+
+    // ================= EVENT =================
+
+    sendBtn.onclick = sendMessage;
+
+    chatInput.addEventListener("keypress", function (e) {
+
+        if (e.key === "Enter") {
+            sendMessage();
+        }
+
+    });
+
+  });
+
+</script>
+{% endblock %}

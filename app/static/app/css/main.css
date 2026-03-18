@@ -1,0 +1,172 @@
+/* Tổng quan nền và font chữ */
+
+/* Tổng thể: Căn chỉnh hàng ngang giữa form và order summary */
+/* Định dạng bố cục */
+/* Đảm bảo phần thân của trang (body) sử dụng flexbox để căn giữa và cố định footer ở dưới */
+html, body{
+    height:100%;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+}
+.footer {
+    margin-top: auto;  /* Đẩy footer xuống cuối cùng */
+    
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+}
+
+.container--fluid {
+    width: 100%;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin: 20px 0;
+}
+
+.col-lg-6 {
+    flex: 0 0 48%; /* Hai cột chia đều 48% mỗi bên, chừa khoảng cách */
+    max-width: 48%;
+}
+
+.box-element {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+/* Form */
+#form-wrapper {
+    width: 100%;
+}
+
+.form-field {
+    width: 100%; /* Form input full chiều ngang */
+    margin-bottom: 15px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Nút bấm */
+.btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background-color: #D99485;
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.btn:hover {
+    background-color: #a1695d;
+}
+
+/* Tóm tắt giỏ hàng */
+.cart-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.row-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    margin-right: 15px;
+}
+
+.cart-item {
+    flex: 1;
+    text-align: center;
+}
+
+
+/* Định dạng hình ảnh trong giỏ hàng */
+.row-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+/* Định dạng số lượng */
+.quantity {
+    display: flex; /* Sắp xếp nút số lượng theo hàng ngang */
+    align-items: center;
+    justify-content: center;
+}
+
+.chg-quantity {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    margin: 0 5px;
+}
+
+.quantity-text {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0 5px;
+}
+
+/* Font chữ và căn chỉnh */
+.cart-item p {
+    margin: 0;
+    font-size: 14px;
+    color: #333;
+   
+}
+
+/* Responsive cho màn hình nhỏ */
+@media (max-width: 768px) {
+    .cart-row {
+        flex-direction: column; /* Xếp theo chiều dọc trên màn hình nhỏ */
+        align-items: flex-start;
+    }
+
+    .cart-item {
+        width: 100%; /* Đầy chiều rộng */
+        margin-bottom: 100px;
+    }
+}
+.cart-container {
+    position: relative; /* Giúp định vị chính xác phần tử con */
+    display: inline-block;
+}
+
+.cart-icon {
+    position: relative;
+    display: inline-block;
+}
+
+.cart-count {
+    position: absolute;
+    top: -10px; /* Di chuyển số lên trên */
+    right: -10px; /* Di chuyển số sang phải */
+    background-color: red; /* Màu nền nổi bật */
+    color: white; /* Màu chữ */
+    font-size: 12px; /* Kích thước chữ */
+    font-weight: bold; /* Chữ đậm */
+    padding: 2px 6px; /* Khoảng cách bên trong */
+    border-radius: 50%; /* Tạo hình tròn */
+    line-height: 1; /* Đảm bảo văn bản không bị cắt */
+    z-index: 10; /* Đặt lên trên các phần tử khác */
+}
